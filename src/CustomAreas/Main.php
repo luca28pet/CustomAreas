@@ -193,7 +193,7 @@ class Main extends PluginBase{
     }
 
     private function isAreaTooBig(array $pos1, array $pos2){
-        return $this->getConfig()->get("max-distance") === 0 ? false : (($pos1["x"] - $pos2["x"]) ** 2 + ($pos1["y"] - $pos2["y"]) ** 2 + ($pos1["z"] - $pos2["z"]) ** 2) > $this->getConfig()->get("max-distance") ** 2;
+        return $this->getConfig()->get("max-distance") === 0 ? false : (($pos1[0] - $pos2[0]) ** 2 + ($pos1[1] - $pos2[1]) ** 2 + ($pos1[2] - $pos2[2]) ** 2) > $this->getConfig()->get("max-distance") ** 2;
     }
 
 }
