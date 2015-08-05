@@ -27,12 +27,14 @@ class Main extends PluginBase{
 
     public function onEnable(){
         @mkdir($this->getDataFolder());
+        $this->saveDefaultConfig();
         if(file_exists($this->getDataFolder()."areas.json")){
             $areasData = json_decode(file_get_contents($this->getDataFolder()."areas.json"), true);
             foreach($areasData as $area){
                 $this->areas[] = new Area($this, $area["pos1"], $area["pos2"], $area["level"], $area["owner"], $area["whiteList"]);
             }
         }
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     }
 
     public function onDisable(){
@@ -93,6 +95,10 @@ class Main extends PluginBase{
                     }
                     $pos1 = [$this->selections[$sender->getName()]["pos1"]["x"], $this->selections[$sender->getName()]["pos1"]["y"], $this->selections[$sender->getName()]["pos1"]["z"]];
                     $pos2 = [$this->selections[$sender->getName()]["pos2"]["x"], $this->selections[$sender->getName()]["pos2"]["y"], $this->selections[$sender->getName()]["pos2"]["z"]];
+                    if($this->isAreaTooBig($pos1, $pos2)){
+                        $sender->sendMessage("Your area is too big");
+                        return true;
+                    }
                     $this->areas[] = new Area($this, $pos1, $pos2, $this->selections[$sender->getName()]["pos2"]["level"], $sender->getName());
                     $sender->sendMessage("Area created succesfully");
                     unset($this->selections[$sender->getName()]);
@@ -184,6 +190,10 @@ class Main extends PluginBase{
             }
         }
         return true;
+    }
+
+    private function isAreaTooBig(array $pos1, array $pos2){
+        return $this->getConfig()->get("max-distance") === 0 ? false : (($pos1["x"] - $pos2["x"]) ** 2 + ($pos1["y"] - $pos2["y"]) ** 2 + ($pos1["z"] - $pos2["z"]) ** 2) > $this->getConfig()->get("max-distance") ** 2;
     }
 
 }

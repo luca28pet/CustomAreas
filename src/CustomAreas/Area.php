@@ -26,7 +26,7 @@ class Area{
     }
 
     public function canBuild(Player $player){
-        return strtolower($player->getName()) === $this->owner or in_array(strtolower($player->getName()), $this->whiteList);
+        return (strtolower($player->getName()) === $this->owner or in_array(strtolower($player->getName()), $this->whiteList));
     }
 
 }
