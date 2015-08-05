@@ -1,0 +1,22 @@
+name: CustomAreas
+main: CustomAreas\Main
+version: 1.0
+api: [1.12.0]
+
+load: POSTWORLD
+author: luca28pet
+description: Protect areas in your server
+website: https://github.com/luca28pet/CustomAreas
+commands:
+ customareas:
+  description: Manage areas
+  usage: "/area pos1|pos2|create|delete|whitelist"
+  aliases: [area, ca, areas]
+  permission: customareas.command
+permissions:
+ customareas.command:
+  description: "Allows the user to manage areas"
+  default: true
+ customareas.bypass:
+  description: "Allows to have admin features"
+  default: op
