@@ -110,6 +110,7 @@ class Main extends PluginBase{
                         if($area->isInside($sender)){
                             if($area->owner !== $name and !$sender->hasPermission("customareas.bypass")){
                                 $sender->sendMessage("This is not your area");
+                                return true;
                             }
                             unset($this->areas[$key]);
                             $sender->sendMessage("Area deleted");
