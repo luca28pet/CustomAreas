@@ -16,36 +16,33 @@ class EventListener implements Listener{
     }
 
     public function onPlace(BlockPlaceEvent $event){
-        $p = $event->getPlayer();
-        if(!$p->hasPermission("customareas.bypass")){
+        if(!$event->getPlayer()->hasPermission("customareas.bypass")){
             foreach($this->plugin->areas as $area){
-                if($area->isInside(strtolower($p->getLevel()->getName()), $event->getBlock()) and !$area->canBuild($p)){
+                if($area->isInside($event->getBlock()) and !$area->canBuild($event->getPlayer())){
                     $event->setCancelled();
-                    $p->sendMessage("This is ".$area->owner."\'s private area");
+                    $event->getPlayer()->sendMessage("This is ".$area->owner."'s private area");
                 }
             }
         }
     }
 
     public function onBreak(BlockBreakEvent $event){
-        $p = $event->getPlayer();
-        if(!$p->hasPermission("customareas.bypass")){
+        if(!$event->getPlayer()->hasPermission("customareas.bypass")){
             foreach($this->plugin->areas as $area){
-                if($area->isInside(strtolower($p->getLevel()->getName()), $event->getBlock()) and !$area->canBuild($p)){
+                if($area->isInside($event->getBlock()) and !$area->canBuild($event->getPlayer())){
                     $event->setCancelled();
-                    $p->sendMessage("This is ".$area->owner."\'s private area");
+                    $event->getPlayer()->sendMessage("This is ".$area->owner."'s private area");
                 }
             }
         }
     }
 
     public function onInteract(PlayerInteractEvent $event){
-        $p = $event->getPlayer();
-        if(!$p->hasPermission("customareas.bypass")){
+        if(!$event->getPlayer()->hasPermission("customareas.bypass")){
             foreach($this->plugin->areas as $area){
-                if($area->isInside(strtolower($p->getLevel()->getName()), $event->getBlock()) and !$area->canBuild($p)){
+                if($area->isInside($event->getBlock()) and !$area->canBuild($event->getPlayer())){
                     $event->setCancelled();
-                    $p->sendMessage("This is ".$area->owner."\'s private area");
+                    $event->getPlayer()->sendMessage("This is ".$area->owner."'s private area");
                 }
             }
         }

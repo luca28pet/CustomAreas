@@ -2,7 +2,7 @@
 
 namespace CustomAreas;
 
-use pocketmine\math\Vector3;
+use pocketmine\level\Position;
 use pocketmine\Player;
 
 class Area{
@@ -18,11 +18,8 @@ class Area{
         $this->whiteList = array_map("strtolower", $whiteList);
     }
 
-    public function isInside($levelName, Vector3 $v){
-        if(strtolower($levelName) !== $this->level){
-            return false;
-        }
-        return ($v->x >= $this->min[0] and $v->x <= $this->max[0] and $v->y >= $this->min[1] and $v->y <= $this->max[1] and $v->z >= $this->min[2] and $v->z <= $this->max[2]);
+    public function isInside(Position $p){
+        return (strtolower($p->getLevel()->getName()) === $this->level and $p->x >= $this->min[0] and $p->x <= $this->max[0] and $p->y >= $this->min[1] and $p->y <= $this->max[1] and $p->z >= $this->min[2] and $p->z <= $this->max[2]);
     }
 
     public function canBuild(Player $player){

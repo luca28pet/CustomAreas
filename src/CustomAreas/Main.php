@@ -60,7 +60,7 @@ class Main extends PluginBase{
             switch(strtolower($sub)){
                 case "pos1":
                     foreach($this->areas as $area){
-                        if($area->isInside($sender->getLevel()->getName(), $sender)){
+                        if($area->isInside($sender)){
                             $sender->sendMessage("This position is inside another area");
                             return true;
                         }
@@ -71,7 +71,7 @@ class Main extends PluginBase{
                 break;
                 case "pos2":
                     foreach($this->areas as $area){
-                        if($area->isInside($sender->getLevel()->getName(), $sender)){
+                        if($area->isInside($sender)){
                             $sender->sendMessage("This position is inside another area");
                             return true;
                         }
@@ -105,9 +105,10 @@ class Main extends PluginBase{
                     return true;
                 break;
                 case "delete":
+                    $name = strtolower($sender->getName());
                     foreach($this->areas as $key => $area){
-                        if($area->isInside($sender->getLevel()->getName(), $sender)){
-                            if($area->owner !== strtolower($sender->getName()) and !$sender->hasPermission("customareas.bypass")){
+                        if($area->isInside($sender)){
+                            if($area->owner !== $name and !$sender->hasPermission("customareas.bypass")){
                                 $sender->sendMessage("This is not your area");
                             }
                             unset($this->areas[$key]);
@@ -129,9 +130,10 @@ class Main extends PluginBase{
                                 $sender->sendMessage("Please specify a player");
                                 return true;
                             }
+                            $name = strtolower($sender->getName());
                             foreach($this->areas as $key => $area){
-                                if($area->isInside($sender->getLevel()->getName(), $sender)){
-                                    if($area->owner !== strtolower($sender->getName()) and !$sender->hasPermission("customareas.bypass")){
+                                if($area->isInside($sender)){
+                                    if($area->owner !== $name and !$sender->hasPermission("customareas.bypass")){
                                         $sender->sendMessage("This is not your area");
                                         return true;
                                     }
@@ -150,9 +152,10 @@ class Main extends PluginBase{
                                 $sender->sendMessage("Please specify a player");
                                 return true;
                             }
+                            $name = strtolower($sender->getName());
                             foreach($this->areas as $key => $area){
-                                if($area->isInside($sender->getLevel()->getName(), $sender)){
-                                    if($area->owner !== strtolower($sender->getName()) and !$sender->hasPermission("customareas.bypass")){
+                                if($area->isInside($sender)){
+                                    if($area->owner !== $name and !$sender->hasPermission("customareas.bypass")){
                                         $sender->sendMessage("This is not your area");
                                         return true;
                                     }
@@ -169,9 +172,10 @@ class Main extends PluginBase{
                             return true;
                         break;
                         case "list":
+                            $name = strtolower($sender->getName());
                             foreach($this->areas as $key => $area){
-                                if($area->isInside($sender->getLevel()->getName(), $sender)){
-                                    if($area->owner !== strtolower($sender->getName()) and !$sender->hasPermission("customareas.bypass")){
+                                if($area->isInside($sender)){
+                                    if($area->owner !== $name and !$sender->hasPermission("customareas.bypass")){
                                         $sender->sendMessage("This is not your area");
                                         return true;
                                     }
