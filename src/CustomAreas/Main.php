@@ -65,7 +65,7 @@ class Main extends PluginBase{
                             return true;
                         }
                     }
-                    $this->selections[$sender->getName()]["pos1"] = ["x" => $sender->getFloorX(), "y" => $sender->getFloorY(), "z" => $sender->getFloorZ(), "level" => $sender->getLevel()->getName()];
+                    $this->selections[$sender->getName()]["pos1"] = [$sender->getFloorX(), $sender->getFloorY(), $sender->getFloorZ(), $sender->getLevel()->getName()];
                     $sender->sendMessage("Position 1 set.");
                     return true;
                 break;
@@ -76,7 +76,7 @@ class Main extends PluginBase{
                             return true;
                         }
                     }
-                    $this->selections[$sender->getName()]["pos2"] = ["x" => $sender->getFloorX(), "y" => $sender->getFloorY(), "z" => $sender->getFloorZ(), "level" => $sender->getLevel()->getName()];
+                    $this->selections[$sender->getName()]["pos2"] = [$sender->getFloorX(), $sender->getFloorY(), $sender->getFloorZ(), $sender->getLevel()->getName()];
                     $sender->sendMessage("Position 2 set.");
                     return true;
                 break;
@@ -89,17 +89,19 @@ class Main extends PluginBase{
                         $sender->sendMessage("Please select position 2");
                         return true;
                     }
-                    if($this->selections[$sender->getName()]["pos1"]["level"] !== $this->selections[$sender->getName()]["pos2"]["level"]){
+                    if($this->selections[$sender->getName()]["pos1"][3] !== $this->selections[$sender->getName()]["pos2"][3]){
                         $sender->sendMessage("Positions are in different levels");
                         return true;
                     }
-                    $pos1 = [$this->selections[$sender->getName()]["pos1"]["x"], $this->selections[$sender->getName()]["pos1"]["y"], $this->selections[$sender->getName()]["pos1"]["z"]];
-                    $pos2 = [$this->selections[$sender->getName()]["pos2"]["x"], $this->selections[$sender->getName()]["pos2"]["y"], $this->selections[$sender->getName()]["pos2"]["z"]];
-                    if($this->isAreaTooBig($pos1, $pos2)){
+                    if($this->tooManyAreas($sender)){
+                        $sender->sendMessage("You have too many areas");
+                        return true;
+                    }
+                    if($this->isAreaTooBig($this->selections[$sender->getName()]["pos1"], $this->selections[$sender->getName()]["pos2"])){
                         $sender->sendMessage("Your area is too big");
                         return true;
                     }
-                    $this->areas[] = new Area($this, $pos1, $pos2, $this->selections[$sender->getName()]["pos2"]["level"], $sender->getName());
+                    $this->areas[] = new Area($this, $this->selections[$sender->getName()]["pos1"], $this->selections[$sender->getName()]["pos2"], $this->selections[$sender->getName()]["pos1"][3], $sender->getName());
                     $sender->sendMessage("Area created succesfully");
                     unset($this->selections[$sender->getName()]);
                     return true;
@@ -199,6 +201,17 @@ class Main extends PluginBase{
 
     private function isAreaTooBig(array $pos1, array $pos2){
         return $this->getConfig()->get("max-distance") === 0 ? false : (($pos1[0] - $pos2[0]) ** 2 + ($pos1[1] - $pos2[1]) ** 2 + ($pos1[2] - $pos2[2]) ** 2) > $this->getConfig()->get("max-distance") ** 2;
+    }
+
+    private function tooManyAreas(Player $sender){
+        $count = 1;
+        $name = strtolower($sender->getName());
+        foreach($this->areas as $area){
+            if($area->owner === $name){
+                $count += 1;
+            }
+        }
+        return $count > $this->getConfig()->get("area-limit");
     }
 
 }

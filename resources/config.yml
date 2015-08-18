@@ -1,4 +1,6 @@
 ---
 # Max distance between the two corners of the area. Set 0 (zero) to disable
 max-distance: 50
+# Max number of areas that a player can have
+area-limit: 2
 ...
