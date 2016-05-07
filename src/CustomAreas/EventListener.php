@@ -20,7 +20,7 @@ class EventListener implements Listener{
             foreach($this->plugin->areas as $area){
                 if($area->isInside($event->getBlock()) and !$area->canBuild($event->getPlayer())){
                     $event->setCancelled();
-                    $event->getPlayer()->sendMessage("This is ".$area->owner."'s private area");
+                    $event->getPlayer()->sendMessage(str_replace("{owner}", $area->owner, $this->plugin->getConfig()->get("notice")));
                 }
             }
         }
@@ -31,7 +31,7 @@ class EventListener implements Listener{
             foreach($this->plugin->areas as $area){
                 if($area->isInside($event->getBlock()) and !$area->canBuild($event->getPlayer())){
                     $event->setCancelled();
-                    $event->getPlayer()->sendMessage("This is ".$area->owner."'s private area");
+                    $event->getPlayer()->sendMessage(str_replace("{owner}", $area->owner, $this->plugin->getConfig()->get("notice")));
                 }
             }
         }
@@ -42,7 +42,7 @@ class EventListener implements Listener{
             foreach($this->plugin->areas as $area){
                 if($area->isInside($event->getBlock()) and !$area->canBuild($event->getPlayer())){
                     $event->setCancelled();
-                    $event->getPlayer()->sendMessage("This is ".$area->owner."'s private area");
+                    $event->getPlayer()->sendMessage(str_replace("{owner}", $area->owner, $this->plugin->getConfig()->get("notice")));
                 }
             }
         }

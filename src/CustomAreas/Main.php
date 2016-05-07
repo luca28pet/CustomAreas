@@ -61,48 +61,48 @@ class Main extends PluginBase{
                 case "pos1":
                     foreach($this->areas as $area){
                         if($area->isInside($sender)){
-                            $sender->sendMessage("This position is inside another area");
+                            $sender->sendMessage($this->getConfig()->get("position-conflict"));
                             return true;
                         }
                     }
                     $this->selections[$sender->getName()]["pos1"] = [$sender->getFloorX(), $sender->getFloorY(), $sender->getFloorZ(), $sender->getLevel()->getName()];
-                    $sender->sendMessage("Position 1 set.");
+                    $sender->sendMessage($this->getConfig()->get("pos1-set"));
                     return true;
                 break;
                 case "pos2":
                     foreach($this->areas as $area){
                         if($area->isInside($sender)){
-                            $sender->sendMessage("This position is inside another area");
+                            $sender->sendMessage($this->getConfig()->get("position-conflict"));
                             return true;
                         }
                     }
                     $this->selections[$sender->getName()]["pos2"] = [$sender->getFloorX(), $sender->getFloorY(), $sender->getFloorZ(), $sender->getLevel()->getName()];
-                    $sender->sendMessage("Position 2 set.");
+                    $sender->sendMessage($this->getConfig()->get("pos2-set"));
                     return true;
                 break;
                 case "create":
                     if(!isset($this->selections[$sender->getName()]["pos1"])){
-                        $sender->sendMessage("Please select position 1");
+                        $sender->sendMessage($this->getConfig()->get("sel-pos1"));
                         return true;
                     }
                     if(!isset($this->selections[$sender->getName()]["pos2"])){
-                        $sender->sendMessage("Please select position 2");
+                        $sender->sendMessage($this->getConfig()->get("sel-pos2"));
                         return true;
                     }
                     if($this->selections[$sender->getName()]["pos1"][3] !== $this->selections[$sender->getName()]["pos2"][3]){
-                        $sender->sendMessage("Positions are in different levels");
+                        $sender->sendMessage($this->getConfig()->get("different-levels"));
                         return true;
                     }
-                    if($this->tooManyAreas($sender)){
-                        $sender->sendMessage("You have too many areas");
+                    if($this->tooManyAreas($sender) and !$sender->hasPermission("customareas.bypass")){
+                        $sender->sendMessage($this->getConfig()->get("max-areas"));
                         return true;
                     }
-                    if($this->isAreaTooBig($this->selections[$sender->getName()]["pos1"], $this->selections[$sender->getName()]["pos2"])){
-                        $sender->sendMessage("Your area is too big");
+                    if($this->isAreaTooBig($this->selections[$sender->getName()]["pos1"], $this->selections[$sender->getName()]["pos2"]) and !$sender->hasPermission("customareas.bypass")){
+                        $sender->sendMessage($this->getConfig()->get("big-area"));
                         return true;
                     }
                     $this->areas[] = new Area($this, $this->selections[$sender->getName()]["pos1"], $this->selections[$sender->getName()]["pos2"], $this->selections[$sender->getName()]["pos1"][3], $sender->getName());
-                    $sender->sendMessage("Area created succesfully");
+                    $sender->sendMessage($this->getConfig()->get("area-created"));
                     unset($this->selections[$sender->getName()]);
                     return true;
                 break;
@@ -111,67 +111,67 @@ class Main extends PluginBase{
                     foreach($this->areas as $key => $area){
                         if($area->isInside($sender)){
                             if($area->owner !== $name and !$sender->hasPermission("customareas.bypass")){
-                                $sender->sendMessage("This is not your area");
+                                $sender->sendMessage($this->getConfig()->get("not-owner"));
                                 return true;
                             }
                             unset($this->areas[$key]);
-                            $sender->sendMessage("Area deleted");
+                            $sender->sendMessage($this->getConfig()->get("area-deleted"));
                             return true;
                         }
                     }
-                    $sender->sendMessage("Stand inside your area and type this command to delete it");
+                    $sender->sendMessage($this->getConfig()->get("stand-inside"));
                     return true;
                 break;
                 case "whitelist":
                     if(!isset($args[0])){
-                        $sender->sendMessage("Usage: /area whitelist add/remove/list");
+                        $sender->sendMessage("Usage: /ca whitelist add/remove/list");
                     }
                     $action = array_shift($args);
                     switch(strtolower($action)){
                         case "add":
                             if(!isset($args[0])){
-                                $sender->sendMessage("Please specify a player");
+                                $sender->sendMessage($this->getConfig()->get("insert-player"));
                                 return true;
                             }
                             $name = strtolower($sender->getName());
                             foreach($this->areas as $key => $area){
                                 if($area->isInside($sender)){
                                     if($area->owner !== $name and !$sender->hasPermission("customareas.bypass")){
-                                        $sender->sendMessage("This is not your area");
+                                        $sender->sendMessage($this->getConfig()->get("not-owner"));
                                         return true;
                                     }
                                     if(!in_array(strtolower($args[0]), $area->whiteList)){
                                         $this->areas[$key]->whiteList[] = strtolower($args[0]);
                                     }
-                                    $sender->sendMessage("Added ".$args[0]." to whiteList");
+                                    $sender->sendMessage($this->getConfig()->get("wl-add").$args[0]);
                                     return true;
                                 }
                             }
-                            $sender->sendMessage("Stand inside your area and type this command to modify the whiteList");
+                            $sender->sendMessage($this->getConfig()->get("stand-inside-wl"));
                             return true;
                         break;
                         case "remove":
                             if(!isset($args[0])){
-                                $sender->sendMessage("Please specify a player");
+                                $sender->sendMessage($this->getConfig()->get("insert-player"));
                                 return true;
                             }
                             $name = strtolower($sender->getName());
                             foreach($this->areas as $key => $area){
                                 if($area->isInside($sender)){
                                     if($area->owner !== $name and !$sender->hasPermission("customareas.bypass")){
-                                        $sender->sendMessage("This is not your area");
+                                        $sender->sendMessage($this->getConfig()->get("not-owner"));
                                         return true;
                                     }
                                     if(($wlKey = array_search(strtolower($args[0]), $area->whiteList)) !== false){
                                         unset($this->areas[$key]->whiteList[$wlKey]);
-                                        $sender->sendMessage("Removed ".$args[0]." from whiteList");
+                                        $sender->sendMessage($this->getConfig()->get("wl-remove").$args[0]);
                                     }else{
-                                        $sender->sendMessage($args[0]." was not in this area whiteList");
+                                        $sender->sendMessage($args[0].$this->getConfig()->get("not-in-wl"));
                                     }
                                     return true;
                                 }
                             }
-                            $sender->sendMessage("Stand inside your area and type this command to modify the whiteList");
+                            $sender->sendMessage($this->getConfig()->get("stand-inside-wl"));
                             return true;
                         break;
                         case "list":
@@ -179,18 +179,18 @@ class Main extends PluginBase{
                             foreach($this->areas as $key => $area){
                                 if($area->isInside($sender)){
                                     if($area->owner !== $name and !$sender->hasPermission("customareas.bypass")){
-                                        $sender->sendMessage("This is not your area");
+                                        $sender->sendMessage($this->getConfig()->get("not-owner"));
                                         return true;
                                     }
                                     $sender->sendMessage("Whitelist: ".implode(", ", $area->whiteList));
                                     return true;
                                 }
                             }
-                            $sender->sendMessage("Stand inside your area and type this command to see the whiteList");
+                            $sender->sendMessage($this->getConfig()->get("stand-inside-wl"));
                             return true;
                         break;
                         default:
-                            $sender->sendMessage("Usage: /area whitelist add/remove/list");
+                            $sender->sendMessage("Usage: /ca whitelist add/remove/list");
                             return true;
                     }
                 break;
@@ -199,11 +199,11 @@ class Main extends PluginBase{
         return true;
     }
 
-    private function isAreaTooBig(array $pos1, array $pos2){
+    private function isAreaTooBig(array $pos1, array $pos2) : bool{
         return $this->getConfig()->get("max-distance") === 0 ? false : (($pos1[0] - $pos2[0]) ** 2 + ($pos1[1] - $pos2[1]) ** 2 + ($pos1[2] - $pos2[2]) ** 2) > $this->getConfig()->get("max-distance") ** 2;
     }
 
-    private function tooManyAreas(Player $sender){
+    private function tooManyAreas(Player $sender) : bool{
         $count = 1;
         $name = strtolower($sender->getName());
         foreach($this->areas as $area){
