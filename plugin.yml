@@ -1,7 +1,7 @@
 name: CustomAreas
 main: CustomAreas\Main
-version: 1.2
-api: 3.0.0-ALPHA12
+version: 1.2.1
+api: 3.0.0
 author: luca28pet
 description: Protect areas in your server
 website: https://github.com/luca28pet/CustomAreas

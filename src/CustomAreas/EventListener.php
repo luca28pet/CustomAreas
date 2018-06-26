@@ -16,33 +16,33 @@ class EventListener implements Listener{
 	}
 
 	public function onPlace(BlockPlaceEvent $event) : void{
-		if(!$event->getPlayer()->hasPermission("customareas.bypass")){
+		if(!$event->getPlayer()->hasPermission('customareas.bypass')){
 			foreach($this->plugin->areas as $area){
-				if($area->isInside($event->getBlock()) and !$area->canBuild($event->getPlayer())){
+				if($area->isInside($event->getBlock()) && !$area->canBuild($event->getPlayer())){
 					$event->setCancelled();
-					$event->getPlayer()->sendMessage(str_replace("{owner}", $area->owner, $this->plugin->getConfig()->get("notice")));
+					$event->getPlayer()->sendMessage(str_replace('{owner}', $area->owner, $this->plugin->getConfig()->get('notice')));
 				}
 			}
 		}
 	}
 
 	public function onBreak(BlockBreakEvent $event) : void{
-		if(!$event->getPlayer()->hasPermission("customareas.bypass")){
+		if(!$event->getPlayer()->hasPermission('customareas.bypass')){
 			foreach($this->plugin->areas as $area){
-				if($area->isInside($event->getBlock()) and !$area->canBuild($event->getPlayer())){
+				if($area->isInside($event->getBlock()) && !$area->canBuild($event->getPlayer())){
 					$event->setCancelled();
-					$event->getPlayer()->sendMessage(str_replace("{owner}", $area->owner, $this->plugin->getConfig()->get("notice")));
+					$event->getPlayer()->sendMessage(str_replace('{owner}', $area->owner, $this->plugin->getConfig()->get('notice')));
 				}
 			}
 		}
 	}
 
 	public function onInteract(PlayerInteractEvent $event) : void{
-		if(!$event->getPlayer()->hasPermission("customareas.bypass")){
+		if(!$event->getPlayer()->hasPermission('customareas.bypass')){
 			foreach($this->plugin->areas as $area){
-				if($area->isInside($event->getBlock()) and !$area->canBuild($event->getPlayer())){
+				if($area->isInside($event->getBlock()) && !$area->canBuild($event->getPlayer())){
 					$event->setCancelled();
-					$event->getPlayer()->sendMessage(str_replace("{owner}", $area->owner, $this->plugin->getConfig()->get("notice")));
+					$event->getPlayer()->sendMessage(str_replace('{owner}', $area->owner, $this->plugin->getConfig()->get('notice')));
 				}
 			}
 		}

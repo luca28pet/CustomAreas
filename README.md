@@ -29,4 +29,4 @@ Aliases: /ca
 **Permission nodes:**
 
 - _customareas.command_ : use command /area (defaut: true)
-- _customareas.bypass_ : use bypass feature (default: op)
+- _customareas.bypass_ : use bypass feature to edit other players' areas (default: op)
