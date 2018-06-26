@@ -30,3 +30,34 @@ Aliases: /ca
 
 - _customareas.command_ : use command /area (defaut: true)
 - _customareas.bypass_ : use bypass feature to edit other players' areas (default: op)
+
+**Config**
+
+```
+---
+# Max distance between the two corners of the area. Set 0 (zero) to disable
+max-distance: 50
+# Max number of areas that a player can have
+area-limit: 2
+
+#Language
+position-conflict: "This position is inside another area"
+pos1-set: "Position 1 set"
+pos2-set: "Position 2 set"
+sel-pos1: "Please select position 1"
+sel-pos2: "Please select position 2"
+different-levels: "Positions are in different levels"
+max-areas: "You have too many areas"
+big-area: "Your area is too big"
+area-created: "Area created succesfully"
+not-owner: "This is not your area"
+area-deleted: "Area deleted"
+stand-inside: "Stand inside your area and type this command to delete it"
+insert-player: "Please specify a player"
+wl-add: "Added to whitelist the player: "
+stand-inside-wl: "Stand inside your area and type this command to modify the whiteList"
+wl-remove: "Removed from whiteList the player: "
+not-in-wl: " was not in this area whiteList"
+notice: "This is {owner}'s private area"
+...
+```
