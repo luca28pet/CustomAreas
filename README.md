@@ -1,6 +1,10 @@
 **PocketMine Plugin for protecting areas**
 CustomAreas is a PocketMine-MP plugin that provide players a way to protect their buildings using simple commands.
 
+Latest release: https://poggit.pmmp.io/p/CustomAreas/
+
+Latest development phars: https://poggit.pmmp.io/ci/luca28pet/CustomAreas/CustomAreas
+
 **Current features:**
 
 - Create private areas where other players cannot build
